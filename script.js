@@ -5,13 +5,18 @@
  * 1. Supabase 대시보드 -> Project Settings -> API에서 확인한 값을 입력하세요.
  * 2. URL과 anon/public Key를 아래 따옴표 안에 넣어주시면 됩니다.
  */
-const SUPABASE_URL = 'YOUR_SUPABASE_URL'; // 여기에 본인의 Supabase Project URL을 입력하세요 (예: https://xyzcompany.supabase.co)
-const SUPABASE_KEY = 'YOUR_SUPABASE_KEY'; // 여기에 본인의 Supabase anon/public API 키를 입력하세요
+const SUPABASE_URL = 'https://bftneifxjzuwfnnujvxf.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmdG5laWZ4anp1d2ZubnVqdnhmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyMzcwOTAsImV4cCI6MjEwNjgxMzA5MH0.GzOVyCD_QsWIUU3BaxWQPBm48w2lQDJ6EP3Lba1mBA8';
 
-// Supabase 클라이언트 객체 생성 (CDN으로 로드된 window.supabase 사용)
-const supabaseClient = window.supabase
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-  : null;
+// Supabase 클라이언트 객체 안전하게 생성 (잘못된 URL로 인한 전체 스크립트 중단 방지)
+let supabaseClient = null;
+try {
+  if (window.supabase && SUPABASE_URL && SUPABASE_KEY && SUPABASE_URL.startsWith('http')) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  }
+} catch (err) {
+  console.error('Supabase 클라이언트 초기화 오류:', err);
+}
 
 /**
  * ===================================================
@@ -367,8 +372,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // --------------------------------------------------
       // [저장 실패 시 처리]
       // --------------------------------------------------
-      alert('주문 저장에 실패했어요');
-      console.error('주문 저장 에러:', error);
+      const detailMsg = error && error.message ? ` (${error.message})` : '';
+      alert(`주문 저장에 실패했어요${detailMsg}`);
+      console.error('주문 저장 에러 상세:', error);
     } finally {
       // --------------------------------------------------
       // [완료 후 공통 처리]
