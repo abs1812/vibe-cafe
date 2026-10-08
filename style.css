@@ -26,25 +26,68 @@ header {
   margin-bottom: 24px;
 }
 
-.cafe-logo {
-  font-size: 3.5rem;
-  margin-bottom: 8px;
-  display: inline-block;
-  animation: sway 3s ease-in-out infinite; /* 천천히 흔들리는 애니메이션 */
-  transform-origin: bottom center;
+.cafe-logo-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-bottom: 6px;
 }
 
-/* 카페 로고가 좌우로 천천히 흔들리는 키프레임 */
-@keyframes sway {
-  0%, 100% {
-    transform: rotate(0deg);
+/* 커피 위로 피어오르는 김(스팀) 이펙트 */
+.steam-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  height: 20px;
+  margin-bottom: -4px;
+  pointer-events: none;
+}
+
+.steam {
+  width: 4px;
+  height: 14px;
+  background: linear-gradient(to top, rgba(140, 100, 75, 0.75), rgba(140, 100, 75, 0));
+  border-radius: 4px;
+  display: inline-block;
+  opacity: 0;
+  animation: steamRise 2.2s infinite ease-out;
+}
+
+.steam-1 {
+  animation-delay: 0s;
+}
+
+.steam-2 {
+  animation-delay: 0.6s;
+  height: 18px;
+}
+
+.steam-3 {
+  animation-delay: 1.2s;
+}
+
+/* 김(스팀)이 모락모락 올라가는 키프레임 */
+@keyframes steamRise {
+  0% {
+    transform: translateY(6px) scaleX(0.8);
+    opacity: 0;
   }
-  25% {
-    transform: rotate(-10deg);
+  35% {
+    opacity: 0.75;
+    transform: translateY(0px) scaleX(1);
   }
-  75% {
-    transform: rotate(10deg);
+  100% {
+    transform: translateY(-14px) scaleX(1.4);
+    opacity: 0;
   }
+}
+
+/* 커피 로고: 움직이는 모션(흔들림) 없이 안정적으로 고정 */
+.cafe-logo {
+  font-size: 3.2rem;
+  line-height: 1.1;
+  display: inline-block;
 }
 
 header h1 {
@@ -226,47 +269,77 @@ button {
   display: none !important;
 }
 
-/* 11. 탭 네비게이션 스타일 */
-.tab-nav {
+/* 11. 탭 네비게이션 스타일 (알약 슬라이더 형태) */
+.tab-wrapper {
   display: flex;
   justify-content: center;
-  gap: 24px;
   margin-top: 20px;
-  border-bottom: 2px solid #ede3d6;
+}
+
+.tab-nav {
+  position: relative;
+  display: inline-flex;
+  background-color: #efe8de; /* 연한 베이지색 알약 트랙 */
+  border-radius: 9999px;
+  padding: 4px;
+  box-shadow: inset 0 1px 3px rgba(107, 66, 38, 0.08);
+  width: 100%;
+  max-width: 340px;
+}
+
+/* 알약 슬라이더 (활성화된 탭 뒤를 따라 이동하는 갈색 알약 배경) */
+.tab-slider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  background-color: #6b4226;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(107, 66, 38, 0.25);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* 주문 내역 탭이 활성화되었을 때 알약이 오른쪽으로 이동 */
+.tab-nav[data-active="history"] .tab-slider {
+  transform: translateX(100%);
 }
 
 .tab-btn {
-  background: none;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  background: transparent;
   border: none;
-  border-bottom: 3px solid transparent;
-  color: #a89282; /* 선택 안 된 탭: 연한 갈색 글씨 */
-  font-size: 1.05rem;
+  color: #8c7362; /* 비활성 탭 글자색 */
+  font-size: 0.95rem;
   font-weight: 600;
   padding: 10px 14px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  margin-bottom: -2px;
-  transition: all 0.2s ease;
+  border-radius: 9999px;
+  transition: color 0.25s ease;
 }
 
 .tab-btn:hover {
   color: #6b4226;
 }
 
-/* 선택된 탭: 갈색 글씨 + 갈색 밑줄 */
+/* 선택된 탭: 흰색 글씨 */
 .tab-btn.active {
-  color: #6b4226;
-  border-bottom-color: #6b4226;
+  color: #ffffff;
   font-weight: 700;
 }
 
-/* 주문 건수 둥근 갈색 배지 */
+/* 주문 건수 둥근 배지 */
 .badge {
-  background-color: #6b4226;
+  background-color: #8c7362;
   color: #ffffff;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: bold;
   border-radius: 12px;
   padding: 2px 7px;
@@ -274,6 +347,13 @@ button {
   display: inline-block;
   text-align: center;
   line-height: 1.2;
+  transition: all 0.25s ease;
+}
+
+/* 활성 탭 안의 배지는 흰색 배경에 갈색 글씨로 산뜻하게 반전 */
+.tab-btn.active .badge {
+  background-color: #ffffff;
+  color: #6b4226;
 }
 
 /* 12. 주문 내역 (History) 카드 스타일 */
@@ -407,11 +487,11 @@ button {
   }
 
   .tab-nav {
-    gap: 12px;
+    max-width: 100%;
   }
 
   .tab-btn {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 8px 10px;
   }
 }

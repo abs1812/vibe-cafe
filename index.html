@@ -10,17 +10,28 @@
 <body>
   <!-- 페이지 상단 헤더 영역 -->
   <header>
-    <div class="cafe-logo" style="font-size: 3rem;">🐘☕🐘</div>
+    <!-- 커피 로고 및 김(스팀) 이펙트 영역 -->
+    <div class="cafe-logo-container">
+      <div class="steam-wrap" aria-hidden="true">
+        <span class="steam steam-1"></span>
+        <span class="steam steam-2"></span>
+        <span class="steam steam-3"></span>
+      </div>
+      <div class="cafe-logo" style="font-size: 3.2rem;">☕</div>
+    </div>
     <h1>바이브 카페</h1>
     <p>당신의 하루에 바이브를 더하다</p>
 
-    <!-- 탭 메뉴 영역 -->
-    <nav class="tab-nav">
-      <button type="button" class="tab-btn active" id="tab-order-btn">☕ 주문하기</button>
-      <button type="button" class="tab-btn" id="tab-history-btn">
-        📋 주문 내역 <span class="badge" id="order-count-badge">0</span>
-      </button>
-    </nav>
+    <!-- 탭 메뉴 영역 (알약 슬라이더) -->
+    <div class="tab-wrapper">
+      <nav class="tab-nav" data-active="order">
+        <div class="tab-slider" aria-hidden="true"></div>
+        <button type="button" class="tab-btn active" id="tab-order-btn">☕ 주문하기</button>
+        <button type="button" class="tab-btn" id="tab-history-btn">
+          📋 주문 내역 <span class="badge" id="order-count-badge">0</span>
+        </button>
+      </nav>
+    </div>
   </header>
 
   <!-- 주문서 폼 영역 (JS 유효성 검사를 위해 novalidate 추가) -->

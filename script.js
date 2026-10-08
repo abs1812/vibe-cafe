@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. DOM 요소 선택
   // --------------------------------------------------
   // 탭 관련 요소
+  const tabNav = document.querySelector('.tab-nav');                     // 탭 네비게이션 컨테이너
   const tabOrderBtn = document.getElementById('tab-order-btn');         // "☕ 주문하기" 탭 버튼
   const tabHistoryBtn = document.getElementById('tab-history-btn');     // "📋 주문 내역" 탭 버튼
   const tabOrderSection = document.getElementById('tab-order');         // 주문하기 탭 본문 섹션
@@ -76,9 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. 탭 메뉴 전환 기능
   // --------------------------------------------------
   /**
-   * 주문하기 탭을 활성화합니다.
+   * 주문하기 탭을 활성화합니다. (알약 슬라이더가 왼쪽으로 이동)
    */
   function switchToOrderTab() {
+    if (tabNav) tabNav.setAttribute('data-active', 'order');
     tabOrderBtn.classList.add('active');
     tabHistoryBtn.classList.remove('active');
 
@@ -87,9 +89,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * 주문 내역 탭을 활성화하고 최신 목록을 렌더링합니다.
+   * 주문 내역 탭을 활성화하고 최신 목록을 렌더링합니다. (알약 슬라이더가 오른쪽으로 이동)
    */
   function switchToHistoryTab() {
+    if (tabNav) tabNav.setAttribute('data-active', 'history');
     tabHistoryBtn.classList.add('active');
     tabOrderBtn.classList.remove('active');
 
